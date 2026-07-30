@@ -11,10 +11,11 @@
 
   outputs = { self, nixpkgs, home-manager, ... }: {
     nixosConfigurations.tunix = nixpkgs.lib.nixosSystem {
-	system = "x86_64-linux";
-	modules = [
-		./configuration.nix
-	];
+	    system = "x86_64-linux";
+	    modules = [
+		  ./configuration.nix
+      home-manager.nixosModules.default
+	    ];
     };
   };
 }
