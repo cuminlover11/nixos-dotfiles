@@ -117,12 +117,6 @@
     vim
     git
     wget
-    btop
-    pfetch
-    bat
-    lsd
-    cowsay
-    lolcat	
 
     # i3 desktop pieces
     kitty
