@@ -89,6 +89,17 @@ xdg.mimeApps = {
   };
 };
 
+# notifications
+services.dunst = {
+  enable = true;
+  settings = {
+    global = {
+      origin = "top-right";
+      font = "Terminus 9";
+    };
+  };
+};
+
 # screenshots
 services.flameshot = {
   enable = true;
