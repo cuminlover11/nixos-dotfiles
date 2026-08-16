@@ -43,7 +43,6 @@ xdg.mimeApps = {
     };
 
     shellAliases = {
-      nrs = "sudo nixos-rebuild switch";
       ls = "lsd --group-directories-first";
       la = "lsd -a --group-directories-first";
       lt = "lsd --tree";
@@ -90,6 +89,7 @@ xdg.mimeApps = {
   };
 };
 
+# screenshots
 services.flameshot = {
   enable = true;
   settings = {
