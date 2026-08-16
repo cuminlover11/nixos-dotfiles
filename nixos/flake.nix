@@ -10,15 +10,19 @@
     zen-browser = {
 	url = "github:0xc000022070/zen-browser-flake";
 };
+    areofyl-fetch.url = "github:areofyl/fetch";
   };
 
-  outputs = { self, nixpkgs, home-manager, zen-browser, ... }: {
+  outputs = inputs@{ self, nixpkgs, home-manager, zen-browser, ... }: {
     nixosConfigurations.tunix = nixpkgs.lib.nixosSystem {
 	    system = "x86_64-linux";
-	    specialArgs = {inherit zen-browser;};
+	    specialArgs = {inherit zen-browser inputs; };
 	    modules = [
-		  ./configuration.nix
-      		  home-manager.nixosModules.default
+		    ./configuration.nix
+      	home-manager.nixosModules.default
+        {
+          home-manager.extraSpecialArgs = {inherit inputs; };
+        }
 	    ];
     };
   };
