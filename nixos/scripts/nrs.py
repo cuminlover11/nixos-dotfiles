@@ -18,7 +18,7 @@ def main():
     
     print(SEP)
     result = subprocess.run(
-	    ["sudo", "nixos-rebuild", "switch"],
+	    ["sudo", "nixos-rebuild", "switch", "--flake", ".#tunix"],
 	    cwd=REPO_DIR
     )
     
