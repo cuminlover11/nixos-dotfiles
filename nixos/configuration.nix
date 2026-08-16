@@ -2,7 +2,7 @@
 # ThinkPad T14 Gen 2a (AMD Ryzen 5 PRO 5650U, Vega iGPU)
 # Managed as a flake — see flake.nix in this same directory
 
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, zen-browser, ... }:
 
 {
   imports = [
@@ -127,7 +127,7 @@
     pcmanfm xwallpaper mint-y-icons qutebrowser flameshot
 
     # gui apps
-    gedit qpwgraph qownnotes
+    gedit qpwgraph qownnotes zen-browser.packages."${pkgs.system}".default
 
     # dev
     python3 vscodium-fhs nixd
