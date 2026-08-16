@@ -5,26 +5,23 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports = 
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
-  home-manager.useUserPackages = true;
-  home-manager.useGlobalPkgs = true;
-  home-manager.backupFileExtension = "backup"; # Converts duplicate config files into backup files
-  home-manager.users.ucef = import ./home.nix;
-
+  ##### Nix & Home Manager #####
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   nix.gc = {
     automatic = true;
     dates = "weekly";
     options = "--delete-older-than 30d";
   };
 
-  programs.zsh.enable = true;
+  home-manager.useUserPackages = true;
+  home-manager.useGlobalPkgs = true;
+  home-manager.backupFileExtension = "backup";
+  home-manager.users.ucef = import ./home.nix;
 
   ##### Boot & hardware #####
 
@@ -33,26 +30,27 @@
   boot.loader.efi.efiSysMountPoint = "/boot";
 
   hardware.cpu.amd.updateMicrocode = true;
-  hardware.graphics.enable = true; # needed for OpenGL/Vulkan on AMD Vega (llama.cpp)
-
+  hardware.graphics.enable = true;       # OpenGL/Vulkan on AMD Vega (llama.cpp)
+  hardware.graphics.enable32Bit = true;  # Steam
+  hardware.graphics.extraPackages = [ pkgs.rocmPackages.clr.icd ]; # OpenCL; fails
   zramSwap.enable = true;
 
+  ##### Power & maintenance #####
 
-  ##### ThinkPad-specific power & maintenance #####
+  services.fwupd.enable = true;
+  services.thinkfan.enable = true;
 
-  services.fwupd.enable = true;      # firmware updates via LVFS
-  services.thinkfan.enable = true;   # custom fan curve
-
-  # TLP owns power management — must disable the default daemon to avoid conflicts
-  services.power-profiles-daemon.enable = false;
+  services.power-profiles-daemon.enable = false; # TLP owns power mgmt
   services.tlp = {
     enable = true;
     settings = {
       START_CHARGE_THRESH_BAT0 = 75;
-      STOP_CHARGE_THRESH_BAT0 = 80; # caps charging to slow battery wear
+      STOP_CHARGE_THRESH_BAT0 = 80;
     };
   };
 
+  services.udisks2.enable = true;
+  services.gvfs.enable = true;
 
   ##### Networking & locale #####
 
@@ -61,26 +59,31 @@
 
   time.timeZone = "Africa/Casablanca";
   i18n.defaultLocale = "en_US.UTF-8";
-  i18n.extraLocaleSettings = {
-    LC_TIME = "fr_FR.UTF-8";
-  };
+  i18n.extraLocaleSettings.LC_TIME = "fr_FR.UTF-8";
 
-
-  ##### Desktop: bare i3, no DE #####
+  ##### Desktop: bare i3 #####
 
   services.xserver = {
     enable = true;
-    displayManager.lightdm.enable = true;
+    xkb.layout = "us";
     windowManager.i3.enable = true;
     desktopManager.xterm.enable = false;
     displayManager.sessionCommands = ''
-      xwallpaper --zoom ~/Pictures/walls/nixos.png
+      xwallpaper --zoom ~/Pictures/walls/gangrenousflipper4walld.png
       xset r rate 200 40 &
     '';
   };
+  
+  services.displayManager.ly.enable = true;
   services.displayManager.defaultSession = "none+i3";
 
-  services.picom.enable = true; # compositor — i3 has none built in; needed for kitty transparency
+  services.picom = {
+    enable = true;
+    fade = true;
+    inactiveOpacity = 0.9;
+    shadow = true;
+    fadeDelta = 4;
+  };
 
   services.pipewire = {
     enable = true;
@@ -88,11 +91,14 @@
     wireplumber.enable = true;
   };
 
-  environment.variables = {
-    GTK_THEME = "Adwaita:dark";
-  };
+  environment.variables.GTK_THEME = "Adwaita:dark";
+
+  ##### Shell #####
+
+  programs.zsh.enable = true;
 
   ##### User #####
+
   users.users.ucef = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
@@ -102,7 +108,7 @@
 
   ##### Applications #####
 
-  nixpkgs.config.allowUnfree = true; # needed for steam, vscodium-fhs base
+  nixpkgs.config.allowUnfree = true; # a sad necessity
 
   programs.firefox.enable = true;
   programs.obs-studio.enable = true;
@@ -114,30 +120,21 @@
 
   environment.systemPackages = with pkgs; [
     # cli / core
-    vim
-    git
-    wget
+    vim git wget pulseaudio brightnessctl playerctl wl-clipboard xmodmap
 
-    # i3 desktop pieces
-    kitty
-    rofi
-    pcmanfm
-    wl-clipboard
-    xwallpaper
-    mint-y-icons
-    qutebrowser
+    # i3 + desktop pieces
+    i3lock i3status lxqt.lxqt-policykit dunst arandr kitty rofi
+    pcmanfm xwallpaper mint-y-icons qutebrowser flameshot
 
     # gui apps
-    gedit
-    qownnotes
-    vesktop
-    gimp-with-plugins
+    gedit qpwgraph qownnotes
 
     # dev
-    vscodium-fhs
-    nixd
-  ];
+    python3 vscodium-fhs nixd
 
+    # font 
+    terminus_font
+  ];
 
   ##### System #####
 

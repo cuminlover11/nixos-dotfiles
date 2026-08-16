@@ -3,27 +3,35 @@
 {
   home.username = "ucef";
   home.homeDirectory = "/home/ucef";
+  home.sessionPath = [ "$HOME/.local/bin"];
   home.stateVersion = "26.05";
 
+  home.sessionVariables = {
+    EDITOR = "vim";
+    BROWSER = "qutebrowser";
+  };
 
   programs.home-manager.enable = true;
 
-  programs.kitty = {
-    enable = true;
-    font = {
-      name = "FreeMono";
-      size = 11;
-    };
+  xdg.enable = true;
+  xdg.desktopEntries.nsxiv-rifle = {
+  name = "nsxiv (rifle)";
+  exec = "nsxiv-rifle %f";
+  terminal = false;
+  mimeType = [ "image/jpeg" "image/png" "image/gif" "image/webp" ];
+};
 
-    extraConfig = ''
-      remember_window_size no
-      enable_audio_bell no
-      background_opacity 0.75
-      startup_mode windowed
-    '';
+xdg.mimeApps = {
+  enable = true;
+  defaultApplications = {
+    "image/jpeg" = "nsxiv-rifle.desktop";
+    "image/png" = "nsxiv-rifle.desktop";
+    "image/gif" = "nsxiv-rifle.desktop";
+    "image/webp" = "nsxiv-rifle.desktop";
   };
+};
 
-  ##### Shell #####
+
   programs.zsh = {
     enable = true;
     syntaxHighlighting.enable = true;
@@ -35,6 +43,7 @@
     };
 
     shellAliases = {
+      nrs = "sudo nixos-rebuild switch";
       ls = "lsd --group-directories-first";
       la = "lsd -a --group-directories-first";
       lt = "lsd --tree";
@@ -52,10 +61,58 @@
       zle -N sudo-command-line
       bindkey "\e\e" sudo-command-line
       setopt PROMPT_SUBST
-      PROMPT='%B%F{red}%n%f@%F{yellow}%m%f in %F{green}%1~%f %#%b '
+      PROMPT='%B%F{red}%n%f@%F{yellow}%m%f in %F{green}%1~%f%b '
       pfetch
       '';  
   };
+
+  programs.kitty = {
+    enable = true;
+    font = {
+      name = "FreeMono";
+      size = 11;
+    };
+
+    extraConfig = ''
+      remember_window_size no
+      enable_audio_bell no
+      background_opacity 0.75
+      startup_mode windowed
+    '';
+  };
+
+  programs.rofi = {
+  enable = true;
+  theme = "Arc-Dark";
+  extraConfig = {
+    show-icons = true;
+    icon-theme = "Mint-Y";
+  };
+};
+
+services.flameshot = {
+  enable = true;
+  settings = {
+    General = {
+      savePath = "/home/ucef/Pictures/Screenshots";
+      disabledTrayIcon = true;
+      showStartupLaunchMessage = false;
+      saveAsFileExtension = ".png";
+      showDesktopNotification = true;
+      showAbortNotification = false;
+      showHelp = true;
+      showSidePanelButton = true;
+      uiColor = "#6b6b47";
+      contrastUiColor = "#282922";
+      drawColor = "#c41e1e";
+    };
+  };
+};
+
+home.file.".local/bin/nsxiv-rifle" = {
+  source = ./scripts/nsxiv-rifle;
+  executable = true;
+};
 
 home.packages = with pkgs; [
   # cli
@@ -66,6 +123,15 @@ home.packages = with pkgs; [
   lsd
   btop
   pfetch
+
+  # tools
+  pywal
+  nsxiv
+
+  # user apps
+  gimp-with-plugins
+  prismlauncher
+  vesktop
 ];
 
 }
