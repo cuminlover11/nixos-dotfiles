@@ -1,6 +1,11 @@
 { config, pkgs, inputs, ...}:
 
 {
+  imports = [
+    inputs.areofyl-fetch.homeManagerModules.default
+    ./home/zsh.nix
+  ];
+
   home.username = "ucef";
   home.homeDirectory = "/home/ucef";
   home.sessionPath = [ "$HOME/.local/bin"];
@@ -30,8 +35,6 @@ xdg.mimeApps = {
     "image/webp" = "nsxiv-rifle.desktop";
   };
 };
-
-  imports = [ inputs.areofyl-fetch.homeManagerModules.default ];
   
   programs.fetch = {
     enable = true;
@@ -85,7 +88,7 @@ xdg.mimeApps = {
         background = "\${colors.background}";
         foreground = "\${colors.foreground}";
         width = "100%";
-        height = "24pt";
+        height = "22pt";
         fixed-center = true;
         bottom = true;
 
@@ -96,7 +99,7 @@ xdg.mimeApps = {
 
         padding-left = 0;
         padding-right = 0;
-        
+
         module-margin-left = 1;
         module-margin-right = 1;
       
@@ -109,6 +112,49 @@ xdg.mimeApps = {
       "module/i3" = {
         type = "internal/i3";
         format = "<label-state> <label-mode>";
+        index-sort = true;
+        wrapping-scroll = false; 
+
+        # Only show workspaces on the same output as the bar
+        pin-workspaces = true;
+
+        label-mode-padding = 2;
+          label-mode-foreground = "#000";
+          label-mode-background = "\${colors.primary}";
+
+          # focused = "Active workspace on focused monitor";
+          label-focused = "%index%";
+          label-focused-background = "\${colors.primary}";
+          label-focused-padding = 2;
+
+          # unfocused = "Inactive workspace on any monitor";
+          label-unfocused = "%index%";
+          label-unfocused-background = "\${colors.background}";
+          label-unfocused-padding = 2;
+
+          # visible = "Active workspace on unfocused monitor";
+          label-visible = "%index%";
+          label-visible-background = "\${colors.primary}";
+          label-visible-padding = 2;
+
+          # urgent = "Workspace with urgency hint set";
+          label-urgent = "%index%";
+          label-urgent-background = "\${colors.alert}";
+          label-urgent-padding = 2;
+
+          label-separator = "|";
+          label-separator-padding = 2;
+          label-separator-foreground = "#ffb52a";
+        };
+
+        "module/filesystem" = {
+          type = "internal/fs";
+          interval = 10;
+
+          mount-0 = "/";
+
+          format-mounted-underline = "#06E87A";
+          label-mounted = "%mountpoint%: %free%";
    };
 
       "module/date" = {
@@ -125,39 +171,6 @@ xdg.mimeApps = {
         adapter = "AC";
       };
     };
-  };
-
-  programs.zsh = {
-    enable = true;
-    syntaxHighlighting.enable = true;
-    history.size = 10000;
-
-    autosuggestion = {
-      enable = true;
-      highlight = "fg=#ff00ff,bg=cyan,bold";
-    };
-
-    shellAliases = {
-      ls = "lsd --group-directories-first";
-      la = "lsd -a --group-directories-first";
-      lt = "lsd --tree";
-      l = "lsd -l --group-directories-first";
-      cat = "bat --paging=never";
-      fortunecow = "fortune | cowsay -r | lolcat"; 
-    };
-
-    initContent = '' 
-      zstyle ':completion:*' matcher-list 'm:{a-z1-A-Z}={A-Z1-a-z}'
-      sudo-command-line() {
-        [[ -z $BUFFER ]] && LBUFFER="$(fc -ln -1)"
-        [[ $BUFFER == sudo\ * ]] && { BUFFER="''${BUFFER#sudo }"; CURSOR=$((CURSOR - 5)) } || { BUFFER="sudo $BUFFER"; CURSOR=$((CURSOR + 5)) }
-      }
-      zle -N sudo-command-line
-      bindkey "\e\e" sudo-command-line
-      setopt PROMPT_SUBST
-      PROMPT='%B%F{red}%n%f@%F{yellow}%m%f in %F{green}%1~%f%b '
-      pfetch
-      '';  
   };
 
   programs.kitty = {
