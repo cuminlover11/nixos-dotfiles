@@ -41,6 +41,19 @@ xdg.mimeApps = {
       "host"
       "kernel"
       "uptime"
+
+      "display"
+      "wm"
+
+      "cpu"
+      "gpu"
+      "memory"
+      "disk"
+      "battery"
+
+      "locale"
+      "colors"
+
     ];
     speed = 1.0;
     spin = "xy";
