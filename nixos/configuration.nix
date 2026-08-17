@@ -20,7 +20,6 @@
   home-manager.backupFileExtension = "backup";
   home-manager.users.ucef = import ./home.nix;
 
-  ##### Boot & hardware #####
 
   # Bootloader
   boot.loader.systemd-boot.enable = true;
@@ -28,16 +27,28 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
+  # Hardware
+  services.fwupd.enable = true;
+  services.fstrim.enable = true;
+
   hardware.cpu.amd.updateMicrocode = true;
   hardware.graphics.enable = true;       # OpenGL/Vulkan on AMD Vega (llama.cpp)
   hardware.graphics.enable32Bit = true;  # Steam
   hardware.graphics.extraPackages = [ pkgs.rocmPackages.clr.icd ]; # OpenCL; fails
+  
   zramSwap.enable = true;
 
-  ##### Power, Updates & maintenance #####
+  # Bluetooth
+  hardware.bluetooth= {
+    enable = true;
+    powerOnBoot = true;
+    
+  };
 
-  services.fwupd.enable = true;
-  services.thinkfan.enable = true;
+
+
+
+  ##### Power, Updates & maintenance #####
 
   services.power-profiles-daemon.enable = false; # TLP owns power mgmt
   services.tlp = {
@@ -64,10 +75,10 @@
     options = "--delete-older-than 20d";
   };
 
-nix.optimise = {
-  automatic = true;
-  dates = ["weekly"];
-};
+  nix.optimise = {
+    automatic = true;
+    dates = ["weekly"];
+  };
 
   ##### Networking & locale #####
 
