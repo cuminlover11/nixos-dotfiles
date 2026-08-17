@@ -73,11 +73,20 @@ xdg.mimeApps = {
     script = "polybar main &"; # launch command, runs on start 
 
     config = {
+      "colors" = {
+         background = "#1a1f16";   # dark olive base
+         foreground = "#c9c9a0";   # muted khaki text
+         primary = "#6b7a3d";      # olive accent
+         alert = "#a3593a";        # rust/warning tone
+         disabled = "#4a4f3e";
+};
+
       "bar/main" = {
         width = "100%";
         height = "24pt";
         modules-left = "i3";
         modules-center = "date";
+        modules-right = "battery";
       };     # equivalent to [bar/main] in polybar's ini syntax
 
       "module/i3" = {
@@ -90,6 +99,12 @@ xdg.mimeApps = {
         internal = 5;
         date = "%H:%M:%S";
       };  # equivalent to [module/date]
+
+      "module/battery" = {
+        type = "internal/battery";
+        battery = "BAT0";       # check yours: cat /sys/class/power_supply/BAT*/uevent
+        adapter = "AC";
+      };
     };
   };
 
@@ -109,7 +124,7 @@ xdg.mimeApps = {
       lt = "lsd --tree";
       l = "lsd -l --group-directories-first";
       cat = "bat --paging=never";
-      cow = "fortune | cowsay -r | lolcat"; 
+      fortunecow = "fortune | cowsay -r | lolcat"; 
     };
 
     initContent = '' 
