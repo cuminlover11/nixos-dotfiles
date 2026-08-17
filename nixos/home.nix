@@ -64,15 +64,27 @@ xdg.mimeApps = {
     package = pkgs.polybar.override {
       # enable extra modules you need, e.g. pulseaudio/i3 support
       i3Support = true;
+      #i3GapsSupport = true;
+      alsaSupport = true;
       pulseSupport = true;
+      mpdSupport = true;
     };
+
     script = "polybar main &"; # launch command, runs on start 
+
     config = {
       "bar/main" = {
         width = "100%";
         height = "24pt";
+        modules-left = "i3";
         modules-center = "date";
       };     # equivalent to [bar/main] in polybar's ini syntax
+
+      "module/i3" = {
+        type = "internal/i3";
+        format = "<label-state> <label-mode>";
+   };
+
       "module/date" = {
         type = "internal/date";
         internal = 5;
