@@ -7,6 +7,7 @@
 {
   imports = [
     ./hardware-configuration.nix
+    ./machines/thinkpadt14a.nix
   ];
 
   ##### Nix & Home Manager #####
@@ -27,40 +28,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
-  # Hardware
-  services.fwupd.enable = true;
-  services.fstrim.enable = true;
-
-  hardware.cpu.amd.updateMicrocode = true;
-  hardware.graphics.enable = true;       # OpenGL/Vulkan on AMD Vega (llama.cpp)
-  hardware.graphics.enable32Bit = true;  # Steam
-  hardware.graphics.extraPackages = [ pkgs.rocmPackages.clr.icd ]; # OpenCL; fails
-  
-  zramSwap.enable = true;
-
-  # Bluetooth
-  hardware.bluetooth= {
-    enable = true;
-    powerOnBoot = true;
-    
-  };
-
-
-
-
   ##### Power, Updates & maintenance #####
-
-  services.power-profiles-daemon.enable = false; # TLP owns power mgmt
-  services.tlp = {
-    enable = true;
-    settings = {
-      START_CHARGE_THRESH_BAT0 = 75;
-      STOP_CHARGE_THRESH_BAT0 = 80;
-    };
-  };
 
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+  services.fstrim.enable = true;
 
   system.autoUpgrade = {
     enable = true;
