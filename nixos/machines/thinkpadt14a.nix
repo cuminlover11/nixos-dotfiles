@@ -1,5 +1,12 @@
 { config, lib, pkgs, ... }:
 {
+  # kernel modules to load
+  boot.kernelModules = [ "cpufreq_stats" ]; # monitoring module
+
+  # kernel tweaks
+  
+  boot.kernel.sysctl."vm.dirty_writeback_centisecs" = 1500;
+
   hardware.cpu.amd.updateMicrocode = true;
   hardware.graphics.enable = true;       # OpenGL/Vulkan on AMD Vega (llama.cpp)
   hardware.graphics.enable32Bit = true;  # Steam
@@ -8,6 +15,11 @@
   hardware.bluetooth = {
     enable = true;
     powerOnBoot = true;
+    settings = {
+      General = {
+        ControllerMode = "dual";
+      };
+    };
   };
 
   zramSwap.enable = true;
@@ -21,4 +33,8 @@
       STOP_CHARGE_THRESH_BAT0 = 80;
     };
   };
+
+  environment.systemPackages = [ 
+    pkgs.powertop 
+    ];
 }

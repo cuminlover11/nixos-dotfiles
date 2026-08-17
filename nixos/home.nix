@@ -3,8 +3,8 @@
 {
   imports = [
     inputs.areofyl-fetch.homeManagerModules.default
-    ./home/zsh.nix
-    ./home/polybar.nix
+    ./programs/zsh.nix
+    ./services/polybar.nix
   ];
 
   home.username = "ucef";

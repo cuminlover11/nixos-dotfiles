@@ -29,7 +29,7 @@
         width = "100%";
         height = "22pt";
         fixed-center = true;
-        bottom = true;
+        top = true;
 
         line-size = 2;
         line-color = "#f00";
@@ -39,51 +39,19 @@
         padding-left = 0;
         padding-right = 0;
 
-        module-margin-left = 1;
-        module-margin-right = 1;
-      
-
         modules-left = "i3";
         modules-center = "date";
         modules-right = "battery";
+
+        tray-position = "right";
+        tray-padding = 3;
+        scroll-up = "i3wm-wsnext";
+        scroll-down = "i3wm-wsprev";
       };     # equivalent to [bar/main] in polybar's ini syntax
 
       "module/i3" = {
         type = "internal/i3";
         format = "<label-state> <label-mode>";
-        index-sort = true;
-        wrapping-scroll = false; 
-
-        # Only show workspaces on the same output as the bar
-        pin-workspaces = true;
-
-        label-mode-padding = 2;
-          label-mode-foreground = "#000";
-          label-mode-background = "\${colors.primary}";
-
-          # focused = "Active workspace on focused monitor";
-          label-focused = "%index%";
-          label-focused-background = "\${colors.primary}";
-          label-focused-padding = 2;
-
-          # unfocused = "Inactive workspace on any monitor";
-          label-unfocused = "%index%";
-          label-unfocused-background = "\${colors.background}";
-          label-unfocused-padding = 2;
-
-          # visible = "Active workspace on unfocused monitor";
-          label-visible = "%index%";
-          label-visible-background = "\${colors.primary}";
-          label-visible-padding = 2;
-
-          # urgent = "Workspace with urgency hint set";
-          label-urgent = "%index%";
-          label-urgent-background = "\${colors.alert}";
-          label-urgent-padding = 2;
-
-          label-separator = "|";
-          label-separator-padding = 2;
-          label-separator-foreground = "#ffb52a";
         };
 
         "module/filesystem" = {
