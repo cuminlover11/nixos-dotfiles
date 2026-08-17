@@ -76,7 +76,7 @@ xdg.mimeApps = {
       "module/date" = {
         type = "internal/date";
         internal = 5;
-        date = "%H:%M";
+        date = "%H:%M:%S";
       };  # equivalent to [module/date]
     };
   };
