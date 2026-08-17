@@ -12,12 +12,6 @@
   ##### Nix & Home Manager #####
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
-  nix.gc = {
-    automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
-  };
-
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.backupFileExtension = "backup";
@@ -59,6 +53,11 @@
     dates = "daily";
     };
 
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 20d";
+  };
   ##### Networking & locale #####
 
   networking.hostName = "tunix";
