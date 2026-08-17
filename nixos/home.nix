@@ -156,11 +156,13 @@ home.file.".local/bin/nsxiv-rifle" = {
 home.packages = with pkgs; [
   # cli
   bat
-  fortune
-  cowsay
-  lolcat	
   lsd
   btop
+
+  # LARPing 
+  fortune
+  cowsay
+  lolcat
   pfetch
 
   # tools

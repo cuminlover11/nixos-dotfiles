@@ -35,7 +35,7 @@
   hardware.graphics.extraPackages = [ pkgs.rocmPackages.clr.icd ]; # OpenCL; fails
   zramSwap.enable = true;
 
-  ##### Power & maintenance #####
+  ##### Power, Updates & maintenance #####
 
   services.fwupd.enable = true;
   services.thinkfan.enable = true;
@@ -51,6 +51,13 @@
 
   services.udisks2.enable = true;
   services.gvfs.enable = true;
+
+  system.autoUpgrade = {
+    enable = true;
+    allowReboot = false;
+    flake = "/etc/flake#tunix";
+    dates = "daily";
+    };
 
   ##### Networking & locale #####
 
