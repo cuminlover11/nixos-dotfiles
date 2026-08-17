@@ -10,8 +10,11 @@
   ];
 
   ##### Nix & Home Manager #####
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    auto-optimise-store = true;
+  };
 
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
   home-manager.useUserPackages = true;
   home-manager.useGlobalPkgs = true;
   home-manager.backupFileExtension = "backup";
@@ -19,7 +22,9 @@
 
   ##### Boot & hardware #####
 
+  # Bootloader
   boot.loader.systemd-boot.enable = true;
+  boot.loader.systemd-boot.configurationLimit = 10;
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.efi.efiSysMountPoint = "/boot";
 
@@ -58,6 +63,12 @@
     dates = "weekly";
     options = "--delete-older-than 20d";
   };
+
+nix.optimise = {
+  automatic = true;
+  dates = ["weekly"];
+};
+
   ##### Networking & locale #####
 
   networking.hostName = "tunix";
