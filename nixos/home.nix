@@ -82,8 +82,25 @@ xdg.mimeApps = {
 };
 
       "bar/main" = {
+        background = "\${colors.background}";
+        foreground = "\${colors.foreground}";
         width = "100%";
         height = "24pt";
+        fixed-center = true;
+        bottom = true;
+
+        line-size = 2;
+        line-color = "#f00";
+
+        border-size = 0;
+
+        padding-left = 0;
+        padding-right = 0;
+        
+        module-margin-left = 1;
+        module-margin-right = 1;
+      
+
         modules-left = "i3";
         modules-center = "date";
         modules-right = "battery";
@@ -102,6 +119,8 @@ xdg.mimeApps = {
 
       "module/battery" = {
         type = "internal/battery";
+        format-charging-foreground = "\${colors.primary}";
+        format-discharging-foreground = "\${colors.alert}";
         battery = "BAT0";       # check yours: cat /sys/class/power_supply/BAT*/uevent
         adapter = "AC";
       };
