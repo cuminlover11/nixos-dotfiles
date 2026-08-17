@@ -59,6 +59,27 @@ xdg.mimeApps = {
     spin = "xy";
   };
   
+  services.polybar = {
+    enable = true;
+    package = pkgs.polybar.override {
+      # enable extra modules you need, e.g. pulseaudio/i3 support
+      i3Support = true;
+      pulseSupport = true;
+    };
+    script = "polybar main &"; # launch command, runs on start 
+    config = {
+      "bar/main" = {
+        width = "100%";
+        height = "24pt";
+        modules-center = "date";
+      };     # equivalent to [bar/main] in polybar's ini syntax
+      "module/date" = {
+        type = "internal/date";
+        internal = 5;
+        date = "%H:%M";
+      };  # equivalent to [module/date]
+    };
+  };
 
   programs.zsh = {
     enable = true;
