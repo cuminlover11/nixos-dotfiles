@@ -134,6 +134,7 @@
 
     # font 
     terminus_font
+    scientifica
   ];
 
   ##### System #####

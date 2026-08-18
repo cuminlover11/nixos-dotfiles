@@ -66,7 +66,7 @@ xdg.mimeApps = {
   programs.kitty = {
     enable = true;
     font = {
-      name = "FreeMono";
+      name = "Scientifica";
       size = 11;
     };
 
